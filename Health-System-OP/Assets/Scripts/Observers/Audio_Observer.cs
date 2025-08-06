@@ -5,18 +5,24 @@ using UnityEngine;
 public class Audio_Observer : MonoBehaviour, IHealthObserver
 {
     [SerializeField]
-    private Health healthSubject;
+    private Health playerHealth;
+    
+    [SerializeField]
+	private AudioClip deathSound, damageSound, healSound;
 
-    private void OnEnable()
+	[SerializeField]
+	private AudioSource audioSource;
+
+	private void OnEnable()
     {
-        healthSubject.HealthChanged += OnHealthChanged;
-        healthSubject.Death += OnDeath;
+        playerHealth.HealthChanged += OnHealthChanged;
+        playerHealth.Death += OnDeath;
     }
 
     private void OnDisable()
     {
-        healthSubject.HealthChanged -= OnHealthChanged;
-        healthSubject.Death -= OnDeath;
+        playerHealth.HealthChanged -= OnHealthChanged;
+        playerHealth.Death -= OnDeath;
     }
 
     // Start is called before the first frame update
@@ -33,11 +39,22 @@ public class Audio_Observer : MonoBehaviour, IHealthObserver
 
     public void OnDeath()
     {
-
+        // When the player dies, we can play the death sound
+        if (audioSource != null && deathSound != null)
+            audioSource.PlayOneShot(deathSound);
     }
 
-    public void OnHealthChanged(float deltaHealth)
+    public void OnHealthChanged(HealthEventArgs args)
     {
+		if (audioSource == null) return;
 
+        if (args.delta > 0)
+        {
+            // If health increased, play heal sound
+            if (healSound != null)
+                audioSource.PlayOneShot(healSound);
+        }
+        else if (damageSound != null)
+            audioSource.PlayOneShot(damageSound);   // If health decreased, play damage sound
     }
 }

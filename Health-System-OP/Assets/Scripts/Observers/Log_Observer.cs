@@ -5,18 +5,18 @@ using UnityEngine;
 public class Log_Observer : MonoBehaviour, IHealthObserver
 {
     [SerializeField]
-    private Health healthSubject;
+    private Health playerHealth;
 
     private void OnEnable()
     {
-        healthSubject.HealthChanged += OnHealthChanged;
-        healthSubject.Death += OnDeath;
+        playerHealth.HealthChanged += OnHealthChanged;
+        playerHealth.Death += OnDeath;
     }
 
     private void OnDisable()
     {
-        healthSubject.HealthChanged -= OnHealthChanged;
-        healthSubject.Death -= OnDeath;
+        playerHealth.HealthChanged -= OnHealthChanged;
+        playerHealth.Death -= OnDeath;
     }
 
     // Start is called before the first frame update
@@ -33,18 +33,18 @@ public class Log_Observer : MonoBehaviour, IHealthObserver
     
     public void OnDeath()
     {
-        Debug.Log("Player has died.");
+        Debug.Log("Game Over: Player has died.");
     }
 
-    public void OnHealthChanged(float deltaHealth)
+    public void OnHealthChanged(HealthEventArgs args)
     {
-        if (deltaHealth > 0)
+        if (args.delta > 0)
         {
-            Debug.Log($"Player health increased by {deltaHealth}.");
+            Debug.Log($"Player health increased by {args.delta}.");
         }
         else
         {
-            Debug.Log($"Player health decreased by {-deltaHealth}.");
+            Debug.Log($"Player health decreased by {-args.delta}.");
         }
     }
 }

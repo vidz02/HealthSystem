@@ -9,13 +9,19 @@ public class Health : MonoBehaviour, IHealthSubject
     private float maxHealth = 100;
     private float currentHealth;
 
-    public event Action<float> HealthChanged;
+    public event Action<HealthEventArgs> HealthChanged;
     public event Action Death;
+
+    private void Awake()
+    {
+        // Initialize current health to max health
+        currentHealth = maxHealth;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxHealth;
+       
     }
 
     // Update is called once per frame
@@ -29,15 +35,17 @@ public class Health : MonoBehaviour, IHealthSubject
         if (amount <= 0 || currentHealth == 0) return;
 
         var previous = currentHealth;
-        currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
-        var delta = currentHealth - previous; // negative
-        
-        // Invoke the HealthChanged event with the change in health        
-        HealthChanged?.Invoke(delta);
-        
+        currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);  // Clamping ensures health doesn't go below 0
+
         // If health is 0 or less, invoke the Death event
         if (currentHealth <= 0)
             Death?.Invoke();
+        else
+        {
+            var delta = currentHealth - previous; // negative
+            // Invoke the HealthChanged event with decrease in health        
+            HealthChanged?.Invoke(new HealthEventArgs(currentHealth, maxHealth, delta));
+        }
     }
 
     public void Heal(float amount)
@@ -45,10 +53,10 @@ public class Health : MonoBehaviour, IHealthSubject
         if (amount <= 0 || currentHealth == maxHealth) return;
 
         var previous = currentHealth;
-        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        var delta = currentHealth - previous; // positive
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);  // Clamping ensures health doesn't exceed max health
 
-        // Invoke the HealthChanged event with the change in health        
-        HealthChanged?.Invoke(delta);
+        var delta = currentHealth - previous; // positive
+        // Invoke the HealthChanged event with increase in health        
+        HealthChanged?.Invoke(new HealthEventArgs(currentHealth, maxHealth, delta));
     }
 }

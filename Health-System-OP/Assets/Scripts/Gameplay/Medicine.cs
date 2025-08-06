@@ -28,20 +28,7 @@ public class Medicine : MonoBehaviour
             if (playerHealth != null)
             {
                 playerHealth.Heal(restore);
-                Destroy(gameObject);            // Destroy the medicine after use
-            }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Medicine collided with: " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            var playerHealth = collision.gameObject.GetComponent<Health>();
-            if (playerHealth != null)
-            {
-                playerHealth.Heal(restore);
+                //Destroy(gameObject);            // We can Destroy the medicine after use. However keeping it in the scene for testing multiple uses.
             }
         }
     }

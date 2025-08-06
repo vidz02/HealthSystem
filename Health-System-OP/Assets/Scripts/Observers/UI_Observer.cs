@@ -1,22 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UI_Observer : MonoBehaviour, IHealthObserver
 {
     [SerializeField]
-    private Health healthSubject;
+    private Health playerHealth;
+    [SerializeField] 
+    private TMP_Text healthText;
 
     private void OnEnable()
     {
-        healthSubject.HealthChanged += OnHealthChanged;
-        healthSubject.Death += OnDeath;
+        playerHealth.HealthChanged += OnHealthChanged;
+        playerHealth.Death += OnDeath;
     }
 
     private void OnDisable()
     {
-        healthSubject.HealthChanged -= OnHealthChanged;
-        healthSubject.Death -= OnDeath;
+        playerHealth.HealthChanged -= OnHealthChanged;
+        playerHealth.Death -= OnDeath;
     }
 
     // Start is called before the first frame update
@@ -33,11 +36,15 @@ public class UI_Observer : MonoBehaviour, IHealthObserver
 
     public void OnDeath()
     {
-
+        // When the player dies, we can set the health text to 0%
+        if (healthText != null) 
+            healthText.text = "Health: 0%";
     }
 
-    public void OnHealthChanged(float deltaHealth)
+    public void OnHealthChanged(HealthEventArgs args)
     {
-
+        // Update the health text with the current health percentage
+        if (healthText != null)
+            healthText.text = "Health: " + args.current/args.max*100 + "%";
     }
 }

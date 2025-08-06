@@ -28,20 +28,7 @@ public class Hazard : MonoBehaviour
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);
-                Destroy(gameObject);                // Destroy the hazard after it has dealt damage
-            }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Hazard collided with: " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            var playerHealth = collision.gameObject.GetComponent<Health>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(damage);
+                //Destroy(gameObject);                // We can Destroy the Hazard after use. However keeping it in the scene for testing multiple uses.
             }
         }
     }
