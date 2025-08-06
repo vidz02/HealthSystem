@@ -10,6 +10,9 @@ public class GameOver_Observer : MonoBehaviour, IHealthObserver
     [SerializeField]
     private GameObject gameOverImage;
 
+    [SerializeField]
+    private PlayerController playerController;
+
     private void OnEnable()
     {
         playerHealth.HealthChanged += OnHealthChanged;
@@ -37,6 +40,9 @@ public class GameOver_Observer : MonoBehaviour, IHealthObserver
 
     public void OnDeath()
     {
+        if (playerController != null)
+            playerController.enabled = false; // disable player controls
+        
         if (gameOverImage != null)
         {
             gameOverImage.SetActive(true); // show game over image
