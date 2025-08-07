@@ -23,29 +23,29 @@ Implements a `Health` subject that notifies multiple observers (UI, Audio, Logge
 
 ```
 Assets/
-├── Audios/
+├── Audios/	 # Contains SFX for damage, heal, and death
 │   ├── die.mp3
 │   ├── heal.mp3
 │   └── hurt.mp3
 ├── Scenes/
-│   └── Game.unity
+│   └── Game.unity	# Main playable scene with all setup
 ├── Scripts/
-│   ├── Gameplay/
+│   ├── Gameplay/	# Player and environmental interaction scripts
 │   │   ├── Hazard.cs
 │   │   ├── Medicine.cs
 │   │   └── PlayerController.cs
-│   ├── HealthSystem/
+│   ├── HealthSystem/	# Core logic: Health subject, interfaces, event data
 │   │   ├── Health.cs
 │   │   ├── HealthEventArgs.cs
 │   │   ├── IHealthObserver.cs
 │   │   └── IHealthSubject.cs
-│   └── Observers/
+│   └── Observers/	# Event-driven scripts (UI, Audio, Logs, GameOver)
 │       ├── Audio_Observer.cs
 │       ├── GameOver_Observer.cs
 │       ├── Log_Observer.cs
 │    	└── UI_Observer.cs
 ├── Sprites/
-│   └── game_over.png
+│   └── game_over.png	# Shown when player dies
 ├── TextMesh Pro/
 ```
 
@@ -89,6 +89,13 @@ Assets/
 - Game Over flow:
   - Fades in a UI Image
   - Disables player controller component
+
+---
+
+## 🔗 Author
+
+Built by [Vidish S. Raut](https://www.linkedin.com/in/vidish-raut-9595b4b7/)  
+Mumbai, India | Game Programmer | Unity & Unreal Developer
 
 ---
 
